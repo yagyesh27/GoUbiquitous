@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mfusion.mywearapp" >
+    package="com.example.android.sunshine.app" >
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -27,7 +27,7 @@
 
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*" android:pathPrefix="/prefix" />
+                <data android:scheme="wear" android:host="*" android:pathPrefix="/wearable_data" />
             </intent-filter>
         </service>
     </application>

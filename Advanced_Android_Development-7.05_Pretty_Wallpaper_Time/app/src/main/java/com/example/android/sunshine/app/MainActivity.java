@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         putDataMapRequest.getDataMap().putInt("weatherId", wId);
         putDataMapRequest.getDataMap().putInt("highTemp", high);
         putDataMapRequest.getDataMap().putInt("lowTemp", low);
+        putDataMapRequest.getDataMap().putInt("timeStamp", (int) (System.currentTimeMillis())      );
 
         Log.d("Datamap",putDataMapRequest.toString());
 
@@ -158,10 +159,10 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         mGoogleApiClient.connect();
 
 
-        int a=1,b=2,c=3;
+       /* int a=1,b=2,c=3;
 
         sendWeatherData(a, b, c);
-        Log.d("sendDataCall","abc"+a+b+c);
+        Log.d("sendDataCall","abc"+a+b+c);*/
 
         //WeatherContract.WeatherEntry.
 
@@ -170,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -261,6 +264,11 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
     @Override
     public void onConnected(Bundle bundle) {
+
+        int a=1,b=2,c=3;
+
+        sendWeatherData(a, b, c);
+        Log.d("sendDataCall","abc"+a+b+c);
 
     }
 

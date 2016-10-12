@@ -6,11 +6,13 @@ android {
     buildToolsVersion '24.0.1'
 
     defaultConfig {
-        applicationId "com.mfusion.mywearapp"
+        //applicationId "com.mfusion.mywearapp"
+        applicationId "com.example.android.sunshine.app"
         minSdkVersion 20
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -23,5 +25,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.support:wearable:2.0.0-alpha2'
-    compile 'com.google.android.gms:play-services-wearable:9.2.1'
+    compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    //compile 'com.google.android.gms:play-services-wearable:9.2.1'
+    //compile 'com.google.android.gms:play-services-gcm:7.5.0'
 }
