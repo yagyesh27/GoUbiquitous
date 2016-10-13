@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" tools:deviceIds="wear_square"
-    android:background="#4f7fff"
+    android:background="#497bb9"
     android:orientation="vertical">
 
     <!--<TextView android:id="@+id/text" android:layout_width="wrap_content"
@@ -23,8 +23,10 @@
             android:id="@+id/timeText"
             android:gravity="center"
             android:layout_weight="1"
-            android:textSize="30dp"
-            android:textIsSelectable="false" />
+            android:textSize="40dp"
+            android:textIsSelectable="false"
+            android:textStyle="bold"
+            android:textColor="#ffffff" />
 
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +36,8 @@
             android:id="@+id/dateText"
             android:gravity="center"
             android:layout_weight="1"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#f2f2f2" />
 
     </LinearLayout>
 
@@ -48,34 +51,38 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/graphic"
+            android:id="@+id/weatherDesc"
             android:layout_weight="1"
-            android:background="@drawable/weather_icon_png_2"
             android:adjustViewBounds="false"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_clear" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="@string/default_max_temp"
                 android:id="@+id/temperMaxText"
                 android:layout_weight="1"
-                />
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="#98ff9b" />
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="@string/default_min_temp"
                 android:id="@+id/temperMinText"
                 android:layout_weight="1"
-                />
+                android:gravity="center"
+                android:textColor="#c4cdff" />
 
         </LinearLayout>
 

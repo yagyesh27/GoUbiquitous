@@ -185,6 +185,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         Log.d("DATA_ForcastAdapter", highString+lowString);
 
         mICM.onBindViewHolder(forecastAdapterViewHolder, position);
+
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {

@@ -7,10 +7,12 @@ import com.google.android.gms.wearable.*;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +24,9 @@ public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         DataApi.DataListener{
+
+    String  highTemp, lowTemp;
+    int weatherId;
 
 
     @Override
@@ -37,9 +42,9 @@ public class MainActivity extends Activity implements
                 String path = dataEvent.getDataItem().getUri().getPath();
                 if (path.equals("/wearable_data")) {
 
-                    int weatherId = dataMap.getInt("weatherId");
-                    int highTemp = dataMap.getInt("highTemp");
-                    int lowTemp = dataMap.getInt("lowTemp");
+                    weatherId = dataMap.getInt("weatherId");
+                    highTemp = dataMap.getString("highTemp");
+                    lowTemp = dataMap.getString("lowTemp");
                     int timeStamp = dataMap.getInt("timeStamp");
 
 
@@ -50,9 +55,25 @@ public class MainActivity extends Activity implements
             }
 
         }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                 mTextViewHigh = (TextView) stub.findViewById(R.id.temperMaxText);
+                 mTextViewHigh.setText(highTemp);
+                 mTextViewLow =   (TextView) stub.findViewById(R.id.temperMinText);
+                 mTextViewLow.setText(lowTemp);
+                 weatherDesc = (ImageView) stub.findViewById(R.id.weatherDesc);
+                 weatherDesc.setImageResource(getIconResourceForWeatherCondition(weatherId));
+
+            }
+        });
+
     }
 
-    private TextView mTextViewTime, mTextViewDate;
+    private TextView mTextViewTime, mTextViewDate, mTextViewHigh,mTextViewLow;
+    private ImageView weatherDesc;
     Calendar c ;
     SimpleDateFormat dfTime, dfDate;
     String formattedTime;
@@ -85,6 +106,8 @@ public class MainActivity extends Activity implements
                 mTextViewTime.setText(formattedTime);
                 mTextViewDate = (TextView) stub.findViewById(R.id.dateText);
                 mTextViewDate.setText(formattedDate);
+
+
             }
         });
 
@@ -94,7 +117,7 @@ public class MainActivity extends Activity implements
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
+       // mGoogleApiClient.connect();
 
 
     }
@@ -143,6 +166,8 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onConnected(Bundle bundle) {
+
+        Log.d("Onconnect","My wear app on connect");
 
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             Log.d(TAG, "Connected to Google Api Service");

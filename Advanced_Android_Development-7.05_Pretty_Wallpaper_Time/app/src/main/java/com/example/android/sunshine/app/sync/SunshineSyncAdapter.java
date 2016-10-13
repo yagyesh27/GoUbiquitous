@@ -53,12 +53,15 @@ import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.*;
 
 
-public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
+public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
     public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
     public static final String ACTION_DATA_UPDATED =
             "com.example.android.sunshine.app.ACTION_DATA_UPDATED";
@@ -68,7 +71,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int WEATHER_NOTIFICATION_ID = 3004;
-
+    Context mContext;
+    int weatherIdToday;
+    String highString;
+    String lowString;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -86,6 +92,53 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int INDEX_MIN_TEMP = 2;
     private static final int INDEX_SHORT_DESC = 3;
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        int a=1, b=123, c=12345;
+        sendWeatherData(weatherIdToday, highString, lowString);
+        Log.d("sendDataCall",weatherIdToday+" "+highString+" " +lowString);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    public void sendWeatherData(int wId, String high, String low){
+
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/wearable_data");
+        Log.d("After putdata", "bfore putdata");
+        putDataMapRequest.getDataMap().putInt("weatherId", weatherIdToday);
+        putDataMapRequest.getDataMap().putString("highTemp", high);
+        putDataMapRequest.getDataMap().putString("lowTemp", low);
+        putDataMapRequest.getDataMap().putInt("timeStamp", (int) (System.currentTimeMillis())      );
+
+        Log.d("Datamap",putDataMapRequest.toString());
+
+        PutDataRequest request = putDataMapRequest.asPutDataRequest();
+
+        Wearable.DataApi.putDataItem(mGoogleApiClient,request)
+                .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
+                    @Override
+                    public void onResult(DataApi.DataItemResult dataItemResult) {
+                        Log.d("inresult",""+dataItemResult.getStatus().isSuccess());
+                        if(!dataItemResult.getStatus().isSuccess()){
+                            Log.d("Error", "Failed to send data");
+                        }else{
+                            Log.d("Success", "Successfully sent data");
+                        }
+                    }
+                });
+
+
+
+    }
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({LOCATION_STATUS_OK, LOCATION_STATUS_SERVER_DOWN, LOCATION_STATUS_SERVER_INVALID,  LOCATION_STATUS_UNKNOWN, LOCATION_STATUS_INVALID})
     public @interface LocationStatus {}
@@ -98,6 +151,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public SunshineSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        mContext = context;
     }
 
     @Override
@@ -116,6 +170,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         String format = "json";
         String units = "metric";
         int numDays = 14;
+
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -339,6 +394,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     Log.d("WearableData","weather id:" + Integer.toString(weatherId) +"high:"+ Double.toString(high) +"low:"+ Double.toString(low));
 
+                    weatherIdToday =  weatherId;
+                    highString = Utility.formatTemperature(mContext, high);
+                    lowString = Utility.formatTemperature(mContext, low);
                     //MainActivity a = new MainActivity();
                     //sendWeatherData(1,12,123);
                     Log.d("sendDataCall","abc"+1+12+12222);
@@ -348,6 +406,18 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                             .addOnConnectionFailedListener(this)
                             .build();
                     mGoogleApiClient.connect();*/
+
+                    /////////////////////////////////////////////////////////////////////////////////////////////
+                    Log.d("Sync Adapt this=", "" + mContext.toString());
+                    mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                            .addApi(Wearable.API)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .build();
+                    mGoogleApiClient.connect();
+
+                    ///////////////................./////////////////.............../////////////////.........
+
 
                 }
 

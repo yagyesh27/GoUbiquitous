@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
     GoogleApiClient mGoogleApiClient;
 
-    public void sendWeatherData(int wId, int high, int low){
+    /*public void sendWeatherData(int wId, int high, int low){
 
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/wearable_data");
         Log.d("After putdata", "bfore putdata");
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
 
 
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,12 +151,13 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             }
         }
 
+       /* Log.d("mainAct this=",""+this.toString());
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-        mGoogleApiClient.connect();
+        mGoogleApiClient.connect();*/
 
 
        /* int a=1,b=2,c=3;
@@ -265,10 +266,10 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     @Override
     public void onConnected(Bundle bundle) {
 
-        int a=1,b=2,c=3;
+        /*int a=1,b=2,c=3;
 
         sendWeatherData(a, b, c);
-        Log.d("sendDataCall","abc"+a+b+c);
+        Log.d("sendDataCall","abc"+a+b+c);*/
 
     }
 
